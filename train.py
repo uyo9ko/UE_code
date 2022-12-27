@@ -58,10 +58,11 @@ class MyModel(pl.LightningModule):
         image_name = batch['image_name']
         _trans, _atm, _GT = self(uw_image)
         _GT = torch.clamp(_GT, 0, 1)
-        for i in range(len(image_name)):
-            # save_image(_trans[i], os.path.join(self.save_path, 'trans_'+image_name[i]))
-            # save_image(_atm[i], os.path.join(self.save_path, 'atm_'+image_name[i]))
-            save_image(_GT[i], os.path.join(self.save_path, image_name[i]))
+        return _GT
+#         for i in range(len(image_name)):
+#             # save_image(_trans[i], os.path.join(self.save_path, 'trans_'+image_name[i]))
+#             # save_image(_atm[i], os.path.join(self.save_path, 'atm_'+image_name[i]))
+#             save_image(_GT[i], os.path.join(self.save_path, image_name[i]))
 
 
     def configure_optimizers(self):
