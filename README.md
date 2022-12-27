@@ -10,7 +10,6 @@ This project is UE
 In order to use this project, you will need the following:
 
 - Python 3.9 or higher
-- pytorch-lightning 
 
 ## Installation
 
