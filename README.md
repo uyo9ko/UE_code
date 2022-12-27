@@ -37,7 +37,7 @@ python train.py
 
 ## Additional Resources
 
-For more information on how the CNN model works, see the following paper:
+For more information on how the model works, see the following paper:
 
 - "...." (xxxx, 2022)
 
