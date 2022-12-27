@@ -88,7 +88,7 @@ class MyDataModule(pl.LightningDataModule):
             datadir = "/mnt/epnfs/zhshen/DE_code_0904/UIEB"
         self.train_data = ImageDataset(os.path.join(datadir, "Train"))
         self.val_data = ImageDataset(os.path.join(datadir, "Test"), istrain=False)
-        self.predict_data = ImageDataset('./samples', ispredict=True)
+        self.predict_data = ImageDataset(os.path.join(datadir, "Test"), istrain=False)
 
     def train_dataloader(self):
         return DataLoader(
