@@ -12,30 +12,44 @@ from albumentations.pytorch import ToTensorV2
 
 
 class ImageDataset(Dataset):
-    def __init__(self, data_dir, istrain=True):
-        if istrain:
-            self.uw_image_path = os.path.join(data_dir, "train")
-        else:
-            self.uw_image_path = os.path.join(data_dir, "test")
-        self.gt_img_path = os.path.join(data_dir, "gt")
-        self.image_names = os.listdir(self.uw_image_path)
-        self.transform = A.Compose(
-            transforms=[
-                A.Resize(448, 608),
-                A.HorizontalFlip(p=0.5),
-                A.RandomCrop(256, 256, p=1),
-                ToTensorV2(),
-            ],
-            additional_targets={"image0": "image"},
-        )
-        if not istrain:
+    def __init__(self, data_dir, istrain=True, ispredict=False):
+        self.ispredict = ispredict
+        if self.ispredict:
+            self.image_names = os.listdir(data_dir)
+            self.uw_image_path = data_dir
             self.transform = A.Compose(
                 transforms=[A.Resize(448, 608), ToTensorV2()],
                 additional_targets={"image0": "image"},
             )
+        else:
+            if istrain:
+                self.uw_image_path = os.path.join(data_dir, "train")
+            else:
+                self.uw_image_path = os.path.join(data_dir, "test")
+            self.gt_img_path = os.path.join(data_dir, "gt")
+            self.image_names = os.listdir(self.uw_image_path)
+            self.transform = A.Compose(
+                transforms=[
+                    A.Resize(448, 608),
+                    A.HorizontalFlip(p=0.5),
+                    A.RandomCrop(256, 256, p=1),
+                    ToTensorV2(),
+                ],
+                additional_targets={"image0": "image"},
+            )
+            if not istrain:
+                self.transform = A.Compose(
+                    transforms=[A.Resize(448, 608), ToTensorV2()],
+                    additional_targets={"image0": "image"},
+                )
 
     def __getitem__(self, index):
         image_name = self.image_names[index]
+        if self.ispredict:
+            uw_image = np.array(Image.open(os.path.join(self.uw_image_path, image_name)))
+            underwater_image = self.transform(image=uw_image)["image"]
+            underwater_image = underwater_image.float() / 255
+            return{"underwater_image": underwater_image}
         uw_image = np.array(Image.open(os.path.join(self.uw_image_path, image_name)))
         gt_image = np.array(Image.open(os.path.join(self.gt_img_path, image_name)))
 
@@ -74,7 +88,7 @@ class MyDataModule(pl.LightningDataModule):
             datadir = "/mnt/epnfs/zhshen/DE_code_0904/UIEB"
         self.train_data = ImageDataset(os.path.join(datadir, "Train"))
         self.val_data = ImageDataset(os.path.join(datadir, "Test"), istrain=False)
-        self.predict_data = ImageDataset('./samples', istrain=False)
+        self.predict_data = ImageDataset('./samples', ispredict=True)
 
     def train_dataloader(self):
         return DataLoader(
