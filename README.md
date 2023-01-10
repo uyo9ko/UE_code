@@ -44,12 +44,3 @@ python train.py
 ```
 
 
-## Additional Resources
-
-For more information on how the model works, see the following paper:
-
-- "...." (xxxx, 2022)
-
-## Contact Information
-
-If you have any questions or encounter any issues, please don't hesitate to contact me at [uyo9ko@gmail.com].
