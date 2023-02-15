@@ -78,7 +78,7 @@ class MyDataModule(pl.LightningDataModule):
         self.dataset = data_set
         self.batch_size = batch_size
         self.num_workers = num_workers
-        if isinstance(img_size, int):
+        if not isinstance(img_size, tuple):
             img_size = (img_size, img_size)
         self.img_size = img_size
         self.data_path = data_path
