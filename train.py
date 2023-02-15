@@ -54,7 +54,7 @@ class MyModel(pl.LightningModule):
 
     def predict_step(self, batch, batch_idx, dataloader_idx=None):
         uw_image = batch['underwater_image']
-        image_name = batch['image_name']
+#         image_name = batch['image_name']
         _trans, _atm, _GT = self(uw_image)
         _GT = torch.clamp(_GT, 0, 1)
         return _GT
