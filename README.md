@@ -32,15 +32,15 @@ The train dataset should be organized as follows:
 ```
 Data
 ├── Train
-│   ├── train
-│   └── gt
+│   ├── raw
+│   └── reference
 ├── Test
-│   ├── test
-│   └── gt
+│   ├── raw
+│   └── reference
 ```
 To train the model, run the following command:
 ```
-python train.py
+python train.py --data_set uieb --data_path your_path
 ```
 
 
