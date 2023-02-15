@@ -40,7 +40,7 @@ Data
 ```
 To train the model, run the following command:
 ```
-python train.py --data_set uieb --data_path your_path
+python train.py --data_set uieb --data_path your_path --batch_size 8 --image_size 256
 ```
 
 
